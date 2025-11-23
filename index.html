@@ -5,10 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/src/style.css" />
+
+<!-- Performance: establish early connections -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Optimized Google Fonts import -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+
+
+
     <title>Sortable List Component - FrontendPro Challenge</title>
   </head>
   <body>
-    <!-- Write your HTML here -->
+    <header class="app-header">
+      <h1 class="app-header__title">Select your top 5 tech skills</h1>
+    </header>
+
+    <main>
+      <section class="app">
+        <ul class="app__list">
+          <li class="app__item" data-index="1">1. Javascript <svg class="app__icon" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </li>
+          <li class="app__item" data-index="2">2. ReactJs <svg class="app__icon" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg></li>
+          <li class="app__item" data-index="3">3. NextJs
+            <svg class="app__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg></li>
+          <li class="app__item app__item--input">
+            <input type="text" class="app__input app__input--active" placeholder="4. Add Skill">
+            <svg class="app__icon app__icon--drop" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </li>
+          <li class="app__item app__item--input">
+            <input type="text" class="app__input app__input--active" placeholder="5. Add Skill">
+            <svg class="app__icon app__icon--drop" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </li>
+
+        </ul>
+      </section>
+      <section class="skills">
+        <ul class="skills__list">
+          <li class="skills__item skills__item--title">Suggested Skills</li>
+          <li class="skills__item" data-index="1">+ HTML</li>
+          <li class="skills__item" data-index="2">+ CSS</li>
+          <li class="skills__item" data-index="3">+ Bootstrap</li>
+          <li class="skills__item" data-index="4">+ TypeScript</li>
+          <li class="skills__item" data-index="5">+ VueJs</li>
+          <li class="skills__item" data-index="6">+ Angular</li>
+          <li class="skills__item" data-index="7">+ NodeJs</li>
+        </ul>
+      </section>
+    </main>
 
     <script src="/src/script.js"></script>
   </body>

@@ -4,4 +4,175 @@
   box-sizing: border-box;
 }
 
+/*  Resets */
+
+p,
+h1,
+h2,
+h3,
+h4{
+  padding: 0;
+  margin: 0;
+}
+
+ul{
+  padding: 0;
+  list-style: none;
+}
+
+/*
+DISTANCES: 18, 25, 30, 48, 65, 155
+*/
+
+/*
+FONT SIZES: 16, 30
+*/
+
+:root{
+
+  --color-suggestions: #171e36;
+  --color-disabled-input: #96A0BC;
+  --color-input-active: #30364a;
+  --bg-input-disabled: #E5E7EC;
+  --bg-input-active: #f7f7fa;
+  --bg-item: #0D2167;
+  --bg-inner: #FFFFFF;
+  --bg-outer: #E1ECFF;
+}
+
+html{
+  font-size: 62.5%;
+}
+
+body{
+  padding: 0;
+  height: 100vh;
+  background-color: #f0f6ff;
+  font-family: "Inter", "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+.app-header__title{
+  margin: 10rem auto 4.7rem;
+  text-align: center;
+  font-size: 3.7rem;
+}
+
+main{
+  width: 100%;
+  max-width: 72rem;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  padding: 6.5rem;
+  border-radius: 1rem;
+  box-shadow: 1rem 0.5rem 2.5rem #e1ecff;
+}
+
+main{
+  display: flex;
+  gap: 6.5rem;
+}
+
+/* #region app*/
+
+.app__list{
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+}
+
+.app{
+  flex-grow: 3.2;
+}
+
+.skills{
+  flex-grow: 1;
+}
+
+.app__item{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-item);
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 2rem 2rem;
+  border-radius: 8px;
+}
+
+.app__icon{
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.app__icon--drop{
+  stroke: darkblue;
+  position: absolute;
+  right: 1.8rem;
+
+}
+
+.app__item--input{
+  padding: 0;
+  height: 6rem;
+  background-color: transparent;
+}
+
+.app__input{
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-size: 1.6rem;
+  font-family: Lato, sans-serif;
+}
+
+.app__input:focus-visible{
+  outline: none;
+}
+
+.app__input--active{
+  background-color: var(--bg-input-active);
+  border: 1px solid var(--bg-input-disabled);
+  color: var(--color-input-active);
+  font-weight: 600;
+}
+
+.app__input--disabled{
+  background-color: var(--bg-input-disabled);
+  border: none;
+  color: var(--color-disabled-input);
+  font-weight: 600;
+}
+
+.app__input--disabled + .app__icon{
+  display: none;
+}
+/*#endregion*/
+
+/* .skills*/
+
+.skills__list{
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.skills__item{
+  cursor: pointer;
+}
+
+.skills__item--title{
+  font-size: 1.6rem;
+  color: var(--color-suggestions);
+  font-weight: 600;
+  cursor:auto;
+}
+
+
+
 /* write your CSS here */
