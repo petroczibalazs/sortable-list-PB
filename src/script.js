@@ -44,12 +44,14 @@ const getAppListInput = function (inputIndex = 1, isDisabled = 'false') {
 // User skill array
 const userSkills = ['Javascript', 'ReactJs', 'NextJs', 'Rust'];
 
-// Drag-related (not yet used but renamed)
+// Drag-related variables
 let dragStartY;
-let dragThresholdY;
-let dragStartIndex;
-let dragItemProps = [];
-let dragClone;
+let dragCursorFromTop;
+let dragStartItemProps = null;
+let dragClosestItemProps = null;
+let appListProps = null;
+let dragItemsProps = [];
+let dragClone = null;
 let dragMarker;
 let isDragging = false;
 
@@ -177,10 +179,111 @@ const handleSkillDelete = function (e) {
 };
 
 
+// Start Drag action
+const handleDragMouseDown = function( e ){
+
+  e.preventDefault();
+
+  dragStartItemProps = null;
+  if( e.target.closest('.app__icon')) return;
+  if( e.target.closest('.app__item--input')) return;
+
+  dragStartY = e.pageY;
+
+  const skillLables = [...appList.children]
+  .filter( label => !label.classList.contains('app__item--input'));
+
+
+  // assigning values to global variables
+
+  skillLables.forEach( ( skillLable, index ) => {
+
+    const {top, height, bottom } = skillLable.getBoundingClientRect();
+
+    dragItemsProps.push(
+      {
+        index,
+        top : top + window.scrollY,
+        height,
+        bottom : bottom + window.scrollY,
+        middle : top + window.scrollY + (height / 2)
+      }
+    )
+  });
+
+  const {left, right, top, bottom, height } = appList.getBoundingClientRect();
+
+  appListProps = {
+    left : left + window.scrollX,
+    right: right + window.scrollX,
+    top: top + window.scrollY,
+    height,
+    bottom: bottom + window.scrollY
+  };
+
+
+  dragStartItemProps = dragItemsProps
+  .find( labelData => dragStartY > labelData.top && dragStartY <= labelData.bottom );
+
+
+  dragCursorFromTop = dragStartY - dragStartItemProps.top;
+
+};
+
+
+// Dragging a skill label
+const handleDragMouseMove = function(e) {
+  if (!dragStartItemProps) return;
+
+  const dragMoveY = e.pageY;
+  const threshold = 5;
+
+  if (!isDragging && Math.abs(dragStartY - dragMoveY) <= threshold) return;
+  isDragging = true;
+
+  // ensure clone exists
+  if (!dragClone) {
+    const original = appList.children[dragStartItemProps.index];
+    dragClone = original.cloneNode(true);
+    dragClone.classList.add("clonedItem");
+
+    dragClone.style.width = original.offsetWidth + "px";
+    dragClone.style.left = dragStartItemProps.left - appListProps.left + "px";
+
+    appList.appendChild(dragClone);
+  }
+
+  // calculate desired top relative to container
+  let newTop = dragMoveY - appListProps.top - dragCursorFromTop;
+
+  // clamp
+  const maxTop = appListProps.height - dragStartItemProps.height;
+
+  if (newTop < 0) newTop = 0;
+  if (newTop > maxTop) newTop = maxTop;
+
+  dragClone.style.top = `${newTop}px`;
+};
+
+const handleDragMouseUp = function(){
+  dragStartItemProps = null;
+  dragItemsProps.length = 0;
+  isDragging = false;
+}
+
+
 // DOM references
 const appList = document.querySelector('.app__list');
 appList.addEventListener('change', handleSkillInput);
 appList.addEventListener('click', handleSkillDelete);
+
+// Drag event listeners
+
+appList.addEventListener('mousedown', handleDragMouseDown);
+document.addEventListener('mousemove', handleDragMouseMove);
+document.addEventListener('mouseup', handleDragMouseUp);
+
+
 
 const skillsList = document.querySelector('.skills__list');
 skillsList.addEventListener('click', handleSuggestedSkillClick);
