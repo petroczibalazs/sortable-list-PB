@@ -5,7 +5,7 @@
  */
 const getAppListItem = function (skillIndex = 1, skillName = 'Lorem ipsum dolor ..') {
   const templateHTML =
-    `<li class="app__item" data-index="${skillIndex}">${skillIndex}. ${skillName}
+    `<li class="app__item" data-index="${skillIndex}"><span class="app__item-ordinal">${skillIndex}.</span> ${skillName}
       <svg class="app__icon" xmlns="http://www.w3.org/2000/svg"
         fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -40,6 +40,20 @@ const getAppListInput = function (inputIndex = 1, isDisabled = 'false') {
   return templateEl.content.firstElementChild;
 };
 
+/**
+ *
+ * @returns
+ */
+const getDragMarker = function(){
+
+  const templateHTML = `<li class="drag-marker"></li>`;
+
+  const templateEL = document.createElement('template');
+  templateEL.innerHTML = templateHTML;
+  return templateEL.content.firstElementChild;
+
+}
+
 
 // User skill array
 const userSkills = ['Javascript', 'ReactJs', 'NextJs', 'Rust'];
@@ -49,11 +63,12 @@ let dragStartY;
 let dragCursorFromTop;
 let dragStartItemProps = null;
 let dragClosestItemProps = null;
-let appListProps = null;
 let dragItemsProps = [];
+let appListProps = null;
 let dragClone = null;
-let dragMarker;
+let dragMarker = null;;
 let isDragging = false;
+let aboveOrUnder = '';
 
 
 // Helpers
@@ -147,12 +162,15 @@ const refreshSkillLabels = function (appList) {
   );
 
   skillListItems.forEach((item, index) => {
-    item.childNodes[0].nodeValue = `${index + 1}. ${userSkills[index]}`;
+
+    const ordinalSpan = item.querySelector('.app__item-ordinal');
+    ordinalSpan.textContent = `${index + 1}. `;
+
   });
 };
 
 
-// Delete a skill (from left list)
+// Delete a skill ( from userSkills array  and the appList item )
 const handleSkillDelete = function (e) {
   if (!e.target.closest('.app__icon')) return;
 
@@ -253,6 +271,14 @@ const handleDragMouseMove = function(e) {
     appList.appendChild(dragClone);
   }
 
+  // ensure dragMarker exists
+  if( !dragMarker ){
+
+    dragMarker = getDragMarker();
+    appList.appendChild( dragMarker );
+  }
+
+
   // calculate desired top relative to container
   let newTop = dragMoveY - appListProps.top - dragCursorFromTop;
 
@@ -263,17 +289,86 @@ const handleDragMouseMove = function(e) {
   if (newTop > maxTop) newTop = maxTop;
 
   dragClone.style.top = `${newTop}px`;
+
+
+  // find closest item
+  const newMiddle = newTop + dragStartItemProps.height / 2;
+
+  let distance = Infinity;
+
+  for ( let [index, itemProps] of dragItemsProps.entries()){
+
+    const labelMiddle = itemProps.middle - appListProps.top;
+
+    if( Math.abs( labelMiddle - newMiddle ) < distance ) {
+      distance = labelMiddle - newMiddle;
+      aboveOrUnder = distance < 0? 'under' : 'above';
+      distance = Math.abs( labelMiddle - newMiddle );
+      dragClosestItemProps = itemProps;
+    }
+  }
+
+  const nextAppItemIndex = dragClosestItemProps.index;
+  const closestAppItem = appList.children[ nextAppItemIndex ];
+
+  let  dragMarkerTop = 0;
+
+  if( aboveOrUnder === 'above'){
+    dragMarkerTop = dragClosestItemProps.top - appListProps.top - 10;
+  }
+  else{
+    dragMarkerTop = dragClosestItemProps.top - appListProps.top + dragClosestItemProps.height + 5;
+  }
+
+  dragMarker.style.top = `${dragMarkerTop}px`;
+
+
 };
 
+// clean up after mouse up
 const handleDragMouseUp = function(){
+
+  if( !isDragging ) return;
+
+  if( dragClosestItemProps ){
+
+    const closestItemIndex = dragClosestItemProps.index;
+    const dragItemIndex = dragStartItemProps.index;
+
+    const closestItem = appList.children[ closestItemIndex ];
+    const dragItem = appList.children[ dragItemIndex ];
+
+    if( aboveOrUnder === 'above'){
+      closestItem.insertAdjacentElement('beforebegin', dragItem);
+    }else{
+      closestItem.insertAdjacentElement('afterend', dragItem);
+    }
+  }
+
+
   dragStartItemProps = null;
   dragItemsProps.length = 0;
   isDragging = false;
+
+  if( dragClone ){
+    dragClone.remove();
+    dragClone = null;
+  }
+
+  if( dragMarker ){
+    dragMarker.remove();
+    dragMarker = null;
+  }
+
+  refreshSkillLabels(appList);
 }
 
 
 // DOM references
 const appList = document.querySelector('.app__list');
+const skillsList = document.querySelector('.skills__list');
+
+
 appList.addEventListener('change', handleSkillInput);
 appList.addEventListener('click', handleSkillDelete);
 
@@ -285,7 +380,6 @@ document.addEventListener('mouseup', handleDragMouseUp);
 
 
 
-const skillsList = document.querySelector('.skills__list');
 skillsList.addEventListener('click', handleSuggestedSkillClick);
 
 // Initial render

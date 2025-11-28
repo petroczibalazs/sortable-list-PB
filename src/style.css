@@ -94,7 +94,7 @@ main{
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   background-color: var(--bg-item);
   color: #fff;
   font-size: 1.6rem;
@@ -102,7 +102,12 @@ main{
   border-radius: 8px;
 }
 
+.app__item-ordinal{
+  margin-right: 10px;
+}
+
 .app__icon{
+  margin-left: auto;
   width: 17px;
   height: 17px;
   cursor: pointer;
@@ -175,12 +180,20 @@ main{
 }
 
 .clonedItem{
-  opacity: 0.6;
+  opacity: 0.2;
   background-color: red;
   box-shadow: 3px 0 7px rgba(255, 255, 255, 0.5);
   position: absolute;
   z-index: 100;
   width: 100%;
+}
+
+.drag-marker{
+  width: 100%;
+  background: #000;
+  height: 5px;
+  left: 0;
+  position: absolute;
 }
 
 
