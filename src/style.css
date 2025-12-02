@@ -90,18 +90,23 @@ main{
   flex-grow: 1;
 }
 
-.app__item{
+.app__item {
   position: relative;
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   background-color: var(--bg-item);
   color: #fff;
   font-size: 1.6rem;
   padding: 2rem 2rem;
   border-radius: 8px;
   cursor: crosshair;
+  transition: opacity 0.6s ease;
 }
+
+.app__item:hover {
+  opacity: 0.8;
+}
+
 
 .app__item-ordinal{
   margin-right: 10px;
@@ -128,13 +133,12 @@ main{
   position: relative;
 }
 
-.app__suggestion-box {
+.app__box-wrapper {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   background-color: rgb(193, 131, 100);
-  padding: 20px;
   border-radius: 7px;
   box-shadow: 3px 3px 15px rgb(0 0 0 / 20%);
   z-index: 100;
@@ -143,18 +147,28 @@ main{
   overflow: hidden;
   transform: translateY(10px);
   transition:
-    opacity 2s ease-out,
+    opacity 1s ease-out,
     transform 0.5s ease-out,
-    max-height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s;
+    max-height 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s;
+    cursor: pointer;
 }
 
-.app__suggestion-box--visible {
+.app__box-wrapper--visible {
   opacity: 1;
   z-index: 100;
   transform: translateY(0);
   max-height: 150px; /* grows only AFTER it arrives */
 }
 
+.app__skill-item{
+  color: inherit;
+  padding: 4px 0;
+}
+
+
+.app__suggestion-box{
+padding: 20px;
+}
 
 
 .app__input{

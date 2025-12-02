@@ -54,12 +54,14 @@ const getDragMarker = function(){
 
 }
 
-const getSkillsBox = function(){
+const getAppBoxWrapper = function(){
 
   const templateHTML =
   `
-  <ul class="app__suggestion-box">
-  </ul>
+  <div class="app__box-wrapper">
+    <ul class="app__suggestion-box">
+    </ul>
+  </div>
   `;
 
   const template = document.createElement('template');
@@ -228,9 +230,16 @@ const handleDragMouseDown = function( e ){
 
   e.preventDefault();
 
-  dragStartItemProps = null;
-  if( e.target.closest('.app__icon')) return;
-  if( e.target.closest('.app__item--input')) return;
+  // ignore clicking on icons and stop fireing the method repeatedly on real ( not cloned ) LI-s
+  const icon = e.target.closest('.app__icon');
+  if (icon && icon.closest('.app__item') && !icon.classList.contains("clonedItem")) {
+    return;
+  }
+
+  // ignore clicking on clone and inside input elements
+  if (e.target.closest('.clonedItem')) return;
+  if (e.target.closest('.app__item--input')) return;
+
 
   dragStartY = e.pageY;
 
@@ -435,6 +444,7 @@ updateInputFields(appList);
 // SUGGESTION BOX parts
 
 let skillsBox = null;
+let appBoxWrapper = null;
 let selectedSkill = null;
 let isSkillsBoxVisible = false;
 
@@ -473,9 +483,9 @@ const suggestions =
 ];
 
 
-const hideSkillsBox = function( skillsBox ){
+const hideAppBoxWrapper = function( appBoxWrapper ){
 
-  skillsBox.classList.remove('app__suggestion-box--visible');
+  appBoxWrapper.classList.remove('app__box-wrapper--visible');
 };
 
 const moveFocusUp = function(  ){
@@ -487,19 +497,36 @@ const moveFocusDown = function(){
 
 }
 
+const renderSkillsBox= function( skillsBox, skills = []){
 
+    while( skillsBox.firstChild ){
+      skillsBox.removeChild(
+        skillsBox.firstChild
+      )
+    };
+
+    skills.forEach( skill => {
+      const listItem = getSkillItem(skill);
+      skillsBox.appendChild( listItem );
+    } );
+
+};
 
 
 const handleSkillInputTyping = function(  e ){
 
   const activeInput = e.target;
   const activeInputLi = activeInput.parentNode;
+  const appInputLis = [...appList.children]
+  .filter( item => item.classList.contains('.app__item--input' ));
+
+
   const inputText = activeInput.value
   .trim()
   .toLowerCase();
 
   if( inputText ==="") {
-    hideSkillsBox( skillsBox );
+    hideAppBoxWrapper( appBoxWrapper );
     return;
   }
 
@@ -510,25 +537,39 @@ const handleSkillInputTyping = function(  e ){
 
   if( matchingSuggestions.length > 0 ){
 
-    if( skillsBox == null ) skillsBox = getSkillsBox();
+    if(appBoxWrapper == null ) {
+      appBoxWrapper = getAppBoxWrapper();
+      skillsBox = appBoxWrapper.querySelector('.app__suggestion-box');
+    }
 
-    while( skillsBox.firstChild ){
-      skillsBox.removeChild(
-        skillsBox.firstChild
-      )
-    };
+    renderSkillsBox( skillsBox, matchingSuggestions );
 
-    matchingSuggestions.forEach( skill => {
 
-      const listItem = getSkillItem(skill);
-      skillsBox.appendChild( listItem );
+    appInputLis.forEach( Li => Li.style.zIndex = '0');
+    activeInputLi.style.zIndex = '100';
 
-    } );
-
-    activeInputLi.appendChild(skillsBox);
+    activeInputLi.appendChild(appBoxWrapper);
     skillsBox.offsetHeight;
-    skillsBox.classList.add('app__suggestion-box--visible');
+    appBoxWrapper.classList.add('app__box-wrapper--visible');
+  }
+  else {
+
+    hideAppBoxWrapper(appBoxWrapper)
   }
 };
 
+const handleDocumentInteractions = function( e ){
+  e.preventDefault();
+
+  if( !appBoxWrapper ) return;
+  if( !e.target.closest('.app__skill-item'))  hideAppBoxWrapper(appBoxWrapper);
+
+  const targetSkill = e.target;
+  console.log(targetSkill.textContent);
+
+  
+
+}
+
 appList.addEventListener('input', handleSkillInputTyping);
+document.addEventListener('mousedown', handleDocumentInteractions)
