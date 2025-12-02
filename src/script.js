@@ -54,6 +54,32 @@ const getDragMarker = function(){
 
 }
 
+const getSkillsBox = function(){
+
+  const templateHTML =
+  `
+  <ul class="app__suggestion-box">
+  </ul>
+  `;
+
+  const template = document.createElement('template');
+  template.innerHTML = templateHTML;
+  return template.content.firstElementChild;
+};
+
+const getSkillItem = function( skillText ){
+
+  const templateHTML = `
+  <li class="app__skill-item">
+  ${skillText}
+  </li>
+  `;
+
+  const template = document.createElement('template');
+  template.innerHTML = templateHTML;
+  return template.content.firstElementChild;
+}
+
 
 // User skill array
 const userSkills = ['Javascript', 'ReactJs', 'NextJs', 'Rust'];
@@ -66,7 +92,7 @@ let dragClosestItemProps = null;
 let dragItemsProps = [];
 let appListProps = null;
 let dragClone = null;
-let dragMarker = null;;
+let dragMarker = null;
 let isDragging = false;
 let aboveOrUnder = '';
 
@@ -296,7 +322,7 @@ const handleDragMouseMove = function(e) {
 
   let distance = Infinity;
 
-  for ( let [index, itemProps] of dragItemsProps.entries()){
+  for ( let [__, itemProps] of dragItemsProps.entries()){
 
     const labelMiddle = itemProps.middle - appListProps.top;
 
@@ -307,9 +333,6 @@ const handleDragMouseMove = function(e) {
       dragClosestItemProps = itemProps;
     }
   }
-
-  const nextAppItemIndex = dragClosestItemProps.index;
-  const closestAppItem = appList.children[ nextAppItemIndex ];
 
   let  dragMarkerTop = 0;
 
@@ -330,10 +353,19 @@ const handleDragMouseUp = function(){
 
   if( !isDragging ) return;
 
+    const moveItem = function(arr, from, to) {
+
+          const item = arr[from];
+          arr.splice(from, 1);
+          if (to > from) to--;
+          arr.splice(to, 0, item);
+    }
+
   if( dragClosestItemProps ){
 
     const closestItemIndex = dragClosestItemProps.index;
     const dragItemIndex = dragStartItemProps.index;
+
 
     const closestItem = appList.children[ closestItemIndex ];
     const dragItem = appList.children[ dragItemIndex ];
@@ -342,6 +374,19 @@ const handleDragMouseUp = function(){
       closestItem.insertAdjacentElement('beforebegin', dragItem);
     }else{
       closestItem.insertAdjacentElement('afterend', dragItem);
+    }
+
+    // refresh userSkills array
+    if(dragItemIndex != closestItemIndex ){
+
+      let fromIndex = dragItemIndex;
+      let toIndex = closestItemIndex;
+
+      if( aboveOrUnder === 'under'){
+        toIndex++;
+      }
+
+      moveItem( userSkills, fromIndex, toIndex );
     }
   }
 
@@ -385,3 +430,105 @@ skillsList.addEventListener('click', handleSuggestedSkillClick);
 // Initial render
 renderAppList(userSkills, appList);
 updateInputFields(appList);
+
+
+// SUGGESTION BOX parts
+
+let skillsBox = null;
+let selectedSkill = null;
+let isSkillsBoxVisible = false;
+
+const suggestions =
+[
+  'JavaScript',
+  'Python',
+  'Java',
+  'C#',
+  'C++',
+  'TypeScript',
+  'HTML',
+  'CSS',
+  'React',
+  'Angular',
+  'Vue.js',
+  'Node.js',
+  'Express.js',
+  'Django',
+  'Flask',
+  'SQL',
+  'NoSQL',
+  'MongoDB',
+  'PostgreSQL',
+  'Git',
+  'Docker',
+  'Kubernetes',
+  'AWS',
+  'Azure',
+  'Google Cloud Platform',
+  'Linux Administration',
+  'Network Security',
+  'Machine Learning',
+  'Data Analysis',
+  'API Development'
+];
+
+
+const hideSkillsBox = function( skillsBox ){
+
+  skillsBox.classList.remove('app__suggestion-box--visible');
+};
+
+const moveFocusUp = function(  ){
+
+}
+
+const moveFocusDown = function(){
+
+
+}
+
+
+
+
+const handleSkillInputTyping = function(  e ){
+
+  const activeInput = e.target;
+  const activeInputLi = activeInput.parentNode;
+  const inputText = activeInput.value
+  .trim()
+  .toLowerCase();
+
+  if( inputText ==="") {
+    hideSkillsBox( skillsBox );
+    return;
+  }
+
+  const matchingSuggestions = suggestions.filter( suggestion =>
+    suggestion.toLowerCase()
+    .trim()
+    .startsWith(inputText) );
+
+  if( matchingSuggestions.length > 0 ){
+
+    if( skillsBox == null ) skillsBox = getSkillsBox();
+
+    while( skillsBox.firstChild ){
+      skillsBox.removeChild(
+        skillsBox.firstChild
+      )
+    };
+
+    matchingSuggestions.forEach( skill => {
+
+      const listItem = getSkillItem(skill);
+      skillsBox.appendChild( listItem );
+
+    } );
+
+    activeInputLi.appendChild(skillsBox);
+    skillsBox.offsetHeight;
+    skillsBox.classList.add('app__suggestion-box--visible');
+  }
+};
+
+appList.addEventListener('input', handleSkillInputTyping);

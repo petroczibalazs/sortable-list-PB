@@ -100,6 +100,7 @@ main{
   font-size: 1.6rem;
   padding: 2rem 2rem;
   border-radius: 8px;
+  cursor: crosshair;
 }
 
 .app__item-ordinal{
@@ -124,7 +125,37 @@ main{
   padding: 0;
   height: 6rem;
   background-color: transparent;
+  position: relative;
 }
+
+.app__suggestion-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: rgb(193, 131, 100);
+  padding: 20px;
+  border-radius: 7px;
+  box-shadow: 3px 3px 15px rgb(0 0 0 / 20%);
+  z-index: 100;
+  opacity: 0;
+  max-height: 8px;
+  overflow: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 2s ease-out,
+    transform 0.5s ease-out,
+    max-height 1.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s;
+}
+
+.app__suggestion-box--visible {
+  opacity: 1;
+  z-index: 100;
+  transform: translateY(0);
+  max-height: 150px; /* grows only AFTER it arrives */
+}
+
+
 
 .app__input{
   width: 100%;
@@ -171,6 +202,17 @@ main{
 .skills__item{
   cursor: pointer;
 }
+
+.skilss__item:focus,
+.skills__item:hover{
+  background-color: #e3e3e3;
+}
+
+.skills__item--title:focus,
+.skills__item--title:hover{
+  background-color: transparent;
+}
+
 
 .skills__item--title{
   font-size: 1.6rem;

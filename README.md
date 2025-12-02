@@ -1,31 +1,58 @@
-![Sortable List Component](./design/desktop-cover.png)
+# Frontend Mentor - Calculator app solution
 
-**Challenge Title**
-Sortable List Component
+This is a solution to the [Calculator app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/calculator-app-9lteq5N29). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-**Challenge Description**
-In this frontend challenge, you'll build a Sortable List Component. This challenge is perfect for you if you're interested in building complex front-end web components and taking your front-end skills to the next level!
+## Table of contents
 
-**Difficulty Level**
-Hard
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Useful resources](#useful-resources)
 
-**Tags**
-FRONTEND
 
-**Learning**
-In this frontend challenge, you'll learn how to build a real-world UI component using JavaScript or ReactJs. You'll also learn how to use CSS Flexbox to lay out the component and make it responsive. This frontend challenge is a great opportunity to improve your JavaScript & ReactJs skills by building a complex frontend web component.
+**Note: Delete this note and update the table of contents based on what sections you keep.**
 
-**Requirements**
+## Overview
+This project involves creating a clone of the Windows Calculator app. While it may seem straightforward at first glance, the level of difficulty can increase significantly depending on how closely you aim to replicate the functionality of the original windows app.
 
-- The component should display a list of up to 5 selected skills in a column.
-- If the list doesn't have all 5 selected skills, the component should display an input box just after the last selected skill in the list.
-- The input box should display suggestions as the user types from an API or hard-coded data.
-- After selecting a skill from the suggestions, the selected skill should be added to the list of selected skills.
-- The component should allow the user to delete a selected skill by clicking on a delete button.
-- The component should allow the user to rearrange the selected skills by drag and drop.
-- The component should also display a column of suggested skills next to the list.
-- The user should be able to select a skill from the suggested skills column and add it directly to the list by clicking on the skill.
+### The challenge
 
-I hope you'll enjoy building this challenge.
+Users should be able to:
 
-Feel free to share your solution on our [website](https://www.frontendpro.dev/) or on social media and [tag us](https://twitter.com/FrontendProHQ).
+- See the size of the elements adjust based on their device's screen size
+- Perform mathmatical operations like addition, subtraction, multiplication, and division
+- Adjust the color theme based on their preference
+
+
+### Screenshot
+
+!["screenshot"](images/preview.jpg)
+
+
+### Links
+
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [simple-calculator online](https://petroczibalazs.github.io/simple-calculator-PETROB/)
+
+### Built with
+
+- Semantic HTML5 markup
+- CSS variables
+- CSS Grid
+- javascript
+
+### What I learned
+
+During this project, I acquired the skill of using the browser’s debugging tools to inspect and monitor the values of various variables. This ability proved invaluable, allowing me to significantly streamline my workflow and save precious time in identifying and resolving issues within the codebase.
+
+
+### Useful resources
+
+- [Wes Bos tutorials](https://wesbos.com/courses) - Discover a wealth of fully comprehensive courses covering topics like CSS Flexbox, CSS Grid, and more. Among them, I found the 30 Days JavaScript Challenge course to be particularly valuable in enhancing my skills.
+- [editpadpro RegEx tutorial](https://www.editpadpro.com/manual/EditPadPro.pdf) - Simply the best regular expression tutorial I have ever seen on the web.
+
+
+
