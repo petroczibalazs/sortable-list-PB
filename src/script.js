@@ -84,7 +84,7 @@ const getSkillItem = function( skillText ){
 
 
 // User skill array
-const userSkills = ['Javascript', 'ReactJs', 'NextJs', 'Rust'];
+const userSkills = ['Javascript', 'ReactJs', 'NextJs'];
 
 // Drag-related variables
 let dragStartY;
@@ -101,46 +101,64 @@ let aboveOrUnder = '';
 
 // Helpers
 const isNewSkill = function (skill) {
-  return userSkills.indexOf(skill) === -1;
+
+  return userSkills.indexOf(skill.trim()) === -1? true : false;
 };
 
 
 // Add skill from text input
 const handleSkillInput = function (e) {
   const inputEl = e.target;
-  const parentItem = inputEl.parentNode;
+  const typedSkill = inputEl.value.trim();
+  const inputParent = inputEl.parentNode;
 
-  const nextSkillIndex = userSkills.length + 1;
-  const newListItem = getAppListItem(nextSkillIndex, inputEl.value);
 
-  parentItem.replaceWith(newListItem);
-  userSkills.push(inputEl.value);
+  if( isNewSkill( typedSkill ) === false ) {
+    inputEl.setAttribute('placeholder', `${typedSkill} is already in your skills!`);
 
-  updateInputFields(appList);
+    inputEl.value = '';
+    hideAppBoxWrapper(appBoxWrapper);
+    return;
+  }
+
+  const nextSkillIndex = userSkills.length;
+  const newListItem = getAppListItem( nextSkillIndex, typedSkill );
+
+  inputParent.replaceWith( newListItem );
+  userSkills.push( typedSkill );
+  updateInputFields( appList );
 };
 
-
-// Add skill from suggested list
-const handleSuggestedSkillClick = function (e) {
-  if (!e.target.closest('.skills__item')) return;
+const addNewListItem = function( skillName ){
 
   const nextInputIndex = [...appList.children].findIndex(child =>
     child.classList.contains('app__item--input')
   );
 
   if (nextInputIndex === -1) return;
+  if (!isNewSkill(skillName)) return;
 
   const nextInputItem = [...appList.children].at(nextInputIndex);
   const newSkillIndex = userSkills.length + 1;
 
-  const newSkillName = e.target.textContent.trim().replace(/\s*[+]\s*/, '');
-  if (!isNewSkill(newSkillName)) return;
-
-  const newListItem = getAppListItem(newSkillIndex, newSkillName);
+  const newListItem = getAppListItem(newSkillIndex, skillName);
   nextInputItem.replaceWith(newListItem);
 
-  userSkills.push(newSkillName);
+  userSkills.push(skillName);
   updateInputFields(appList);
+}
+
+// Add skill from suggested list
+const handleSuggestedSkillClick = function (e) {
+
+  if (!e.target.closest('.skills__item')) return;
+
+  const newSkillName = e.target.textContent
+  .trim()
+  .replace(/\s*[+]\s*/, '');
+
+  addNewListItem( newSkillName );
+
 };
 
 
@@ -207,7 +225,7 @@ const handleSkillDelete = function (e) {
 
   if (clickedItem.classList.contains('app__item--input')) return;
 
-  const skillName = clickedItem.textContent.trim().replace(/\d+\.\s*/, '');
+  const skillName = clickedItem.textContent.replace(/\d+\.\s*/, '').trim();
   const skillIndex = userSkills.indexOf(skillName);
   const lastIndex = userSkills.length - 1;
 
@@ -230,15 +248,15 @@ const handleDragMouseDown = function( e ){
 
   e.preventDefault();
 
-  // ignore clicking on icons and stop fireing the method repeatedly on real ( not cloned ) LI-s
-  const icon = e.target.closest('.app__icon');
-  if (icon && icon.closest('.app__item') && !icon.classList.contains("clonedItem")) {
-    return;
-  }
+// ignore clicking on icons and stop fireing the method repeatedly on real ( not cloned ) LI-s
+const icon = e.target.closest('.app__icon');
+if (icon && icon.closest('.app__item') && !icon.classList.contains("clonedItem")) {
+  return;
+}
 
-  // ignore clicking on clone and inside input elements
-  if (e.target.closest('.clonedItem')) return;
-  if (e.target.closest('.app__item--input')) return;
+// ignore clicking on clone and inside input elements
+if (e.target.closest('.clonedItem')) return;
+if (e.target.closest('.app__item--input')) return;
 
 
   dragStartY = e.pageY;
@@ -513,12 +531,12 @@ const renderSkillsBox= function( skillsBox, skills = []){
 };
 
 
-const handleSkillInputTyping = function(  e ){
+const handleSkillInputTyping = function( e ){
 
   const activeInput = e.target;
   const activeInputLi = activeInput.parentNode;
   const appInputLis = [...appList.children]
-  .filter( item => item.classList.contains('.app__item--input' ));
+  .filter( item => item.classList.contains('app__item--input' ));
 
 
   const inputText = activeInput.value
@@ -559,17 +577,18 @@ const handleSkillInputTyping = function(  e ){
 };
 
 const handleDocumentInteractions = function( e ){
-  e.preventDefault();
+
 
   if( !appBoxWrapper ) return;
-  if( !e.target.closest('.app__skill-item'))  hideAppBoxWrapper(appBoxWrapper);
+  if( !e.target.closest('.app__skill-item'))  {
 
-  const targetSkill = e.target;
-  console.log(targetSkill.textContent);
+    hideAppBoxWrapper(appBoxWrapper);
+    return;
+  }
 
-  
-
+  const targetSkill = e.target.textContent.trim();
+  addNewListItem( targetSkill);
 }
 
 appList.addEventListener('input', handleSkillInputTyping);
-document.addEventListener('mousedown', handleDocumentInteractions)
+document.addEventListener('mouseup', handleDocumentInteractions)
