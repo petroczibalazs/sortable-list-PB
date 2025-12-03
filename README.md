@@ -1,7 +1,6 @@
-# Frontend Mentor - Calculator app solution
+# Frontend coding challenges - Sortable List Component
 
-This is a solution to the [Calculator app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/calculator-app-9lteq5N29). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
-
+This is a solution to the [Sortable List challenge](https://www.frontendpro.dev/frontend-coding-challenges/sortable-list-component-yfG6JlItkHMpWze4wacs).
 ## Table of contents
 
 - [Overview](#overview)
@@ -13,23 +12,29 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
   - [Useful resources](#useful-resources)
 
 
-**Note: Delete this note and update the table of contents based on what sections you keep.**
-
 ## Overview
-This project involves creating a clone of the Windows Calculator app. While it may seem straightforward at first glance, the level of difficulty can increase significantly depending on how closely you aim to replicate the functionality of the original windows app.
+This project involves creating a sortable list component with up to five skills the user can add through input boxes or by clicking on items in a pre-defined list of IT skills. While typing in an input box a pop-up window appears with a dinamic list of further suggestions to chose from. The added skills' order can be changed and they can be deleted or new ones added any time.
 
 ### The challenge
 
-Users should be able to:
+About the component:
 
-- See the size of the elements adjust based on their device's screen size
-- Perform mathmatical operations like addition, subtraction, multiplication, and division
-- Adjust the color theme based on their preference
+- The component should display a list of up to 5 selected skills in a column.
+- If the list doesn't have all 5 selected skills, the component should display an input box just after the last selected skill in the list.
+- The input box should display suggestions as the user types from an API or hard-coded data.
+- After selecting a skill from the suggestions, the selected skill should be added to the list of selected skills.
+- The component should allow the user to delete a selected skill by clicking on a delete button.
+- The component should allow the user to rearrange the selected skills by drag and drop.
+- The component should also display a column of suggested skills next to the list.
+- The user should be able to select a skill from the suggested skills column and add it directly to the list by clicking on the skill.
+- Show the hover state of all the elements.
+- The component should be responsive and display correctly on different screen sizes.
+- Make this landing page look as close to the design as possible.
 
 
 ### Screenshot
 
-!["screenshot"](images/preview.jpg)
+!["screenshot"]("images\sortableList.jpg")
 
 
 ### Links
@@ -41,8 +46,8 @@ Users should be able to:
 
 - Semantic HTML5 markup
 - CSS variables
-- CSS Grid
-- javascript
+- CSS flexbox
+- vanila javascript
 
 ### What I learned
 
