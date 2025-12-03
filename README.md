@@ -40,8 +40,7 @@ About the component:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [simple-calculator online](https://petroczibalazs.github.io/simple-calculator-PETROB/)
+- Live Site URL: [Sortable List online](https://petroczibalazs.github.io/sortable-list-PB/)
 
 ### Built with
 
