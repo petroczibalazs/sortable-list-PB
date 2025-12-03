@@ -25,10 +25,11 @@ const getAppListItem = function (skillIndex = 1, skillName = 'Lorem ipsum dolor 
  */
 const getAppListInput = function (inputIndex = 1, isDisabled = 'false') {
   const state = isDisabled === 'true' ? 'disabled' : 'active';
+  const disabledAttr = isDisabled === 'true' ? 'disabled' : '';
 
   const templateHTML =
     `<li class="app__item app__item--input">
-      <input type="text" class="app__input app__input--${state}" placeholder="${inputIndex}. Add Skill" disabled="${isDisabled}">
+      <input type="text" class="app__input app__input--${state}" placeholder="${inputIndex}. Add Skill" ${disabledAttr}>
       <svg class="app__icon app__icon--drop" xmlns="http://www.w3.org/2000/svg" fill="none"
         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -47,30 +48,23 @@ const getAppListInput = function (inputIndex = 1, isDisabled = 'false') {
 const getDragMarker = function(){
 
   const templateHTML = `<li class="drag-marker"></li>`;
-
   const templateEL = document.createElement('template');
   templateEL.innerHTML = templateHTML;
   return templateEL.content.firstElementChild;
-
 }
 
 const getAppBoxWrapper = function(){
-
   const templateHTML =
-  `
-  <div class="app__box-wrapper">
-    <ul class="app__suggestion-box">
-    </ul>
-  </div>
-  `;
-
+  `<div class="app__box-wrapper" aria-hidden="true">
+     <ul class="app__suggestion-box" role="listbox"></ul>
+   </div>`;
   const template = document.createElement('template');
   template.innerHTML = templateHTML;
   return template.content.firstElementChild;
 };
 
-const getSkillItem = function( skillText ){
 
+const getSkillItem = function( skillText ){
   const templateHTML = `
   <li class="app__skill-item">
   ${skillText}
@@ -102,7 +96,8 @@ let aboveOrUnder = '';
 // Helpers
 const isNewSkill = function (skill) {
 
-  return userSkills.indexOf(skill.trim()) === -1? true : false;
+  if (!skill) return false;
+  return userSkills.indexOf(skill.trim()) === -1;
 };
 
 
@@ -113,15 +108,14 @@ const handleSkillInput = function (e) {
   const inputParent = inputEl.parentNode;
 
 
-  if( isNewSkill( typedSkill ) === false ) {
+  if( !isNewSkill( typedSkill )) {
     inputEl.setAttribute('placeholder', `${typedSkill} is already in your skills!`);
-
     inputEl.value = '';
-    hideAppBoxWrapper(appBoxWrapper);
+    hideAppBoxWrapper();
     return;
   }
 
-  const nextSkillIndex = userSkills.length;
+  const nextSkillIndex = userSkills.length + 1;
   const newListItem = getAppListItem( nextSkillIndex, typedSkill );
 
   inputParent.replaceWith( newListItem );
@@ -131,6 +125,8 @@ const handleSkillInput = function (e) {
 
 const addNewListItem = function( skillName ){
 
+  if (!skillName) return;
+  
   const nextInputIndex = [...appList.children].findIndex(child =>
     child.classList.contains('app__item--input')
   );
@@ -501,7 +497,7 @@ const suggestions =
 ];
 
 
-const hideAppBoxWrapper = function( appBoxWrapper ){
+const hideAppBoxWrapper = function( ){
 
   appBoxWrapper.classList.remove('app__box-wrapper--visible');
 };
@@ -544,7 +540,7 @@ const handleSkillInputTyping = function( e ){
   .toLowerCase();
 
   if( inputText ==="") {
-    hideAppBoxWrapper( appBoxWrapper );
+    hideAppBoxWrapper( );
     return;
   }
 
@@ -572,7 +568,7 @@ const handleSkillInputTyping = function( e ){
   }
   else {
 
-    hideAppBoxWrapper(appBoxWrapper)
+    hideAppBoxWrapper()
   }
 };
 
@@ -582,7 +578,7 @@ const handleDocumentInteractions = function( e ){
   if( !appBoxWrapper ) return;
   if( !e.target.closest('.app__skill-item'))  {
 
-    hideAppBoxWrapper(appBoxWrapper);
+    hideAppBoxWrapper();
     return;
   }
 

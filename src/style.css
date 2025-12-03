@@ -141,7 +141,7 @@ main{
   background-color: rgb(193, 131, 100);
   border-radius: 7px;
   box-shadow: 3px 3px 15px rgb(0 0 0 / 20%);
-  z-index: 100;
+  z-index: 9999;
   opacity: 0;
   max-height: 8px;
   overflow: hidden;
@@ -168,6 +168,7 @@ main{
 
 .app__suggestion-box{
 padding: 20px;
+list-style: none;
 }
 
 
