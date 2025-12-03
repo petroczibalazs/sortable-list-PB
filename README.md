@@ -40,7 +40,8 @@ About the component:
 
 ### Links
 
-- Live Site URL: [Sortable List online](https://petroczibalazs.github.io/sortable-list-PB/)
+- Live Site URL: <a href="https://petroczibalazs.github.io/sortable-list-PB/" target="_blank" rel="noopener noreferrer">Sortable List online</a>
+
 
 ### Built with
 
