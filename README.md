@@ -34,7 +34,7 @@ About the component:
 
 ### Screenshot
 
-!["screenshot"]("images\sortableList.jpg")
+!["screenshot"](images\sortableList.jpg)
 
 
 ### Links
