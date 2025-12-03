@@ -50,15 +50,17 @@ About the component:
 - CSS flexbox
 - vanila javascript
 
+
 ### What I learned
 
-During this project, I acquired the skill of using the browser’s debugging tools to inspect and monitor the values of various variables. This ability proved invaluable, allowing me to significantly streamline my workflow and save precious time in identifying and resolving issues within the codebase.
+This project gave me the opportunity to write clean, well-structured code and to implement each feature in a clear and organized way. I also learned how to design event listeners so that they work independently without interfering with one another.
+
 
 
 ### Useful resources
 
 - [Wes Bos tutorials](https://wesbos.com/courses) - Discover a wealth of fully comprehensive courses covering topics like CSS Flexbox, CSS Grid, and more. Among them, I found the 30 Days JavaScript Challenge course to be particularly valuable in enhancing my skills.
-- [editpadpro RegEx tutorial](https://www.editpadpro.com/manual/EditPadPro.pdf) - Simply the best regular expression tutorial I have ever seen on the web.
+
 
 
 
